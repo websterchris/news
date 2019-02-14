@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1550179731580" clover="3.2.0">
+  <project timestamp="1550179731581" name="All files">
+    <metrics statements="26" coveredstatements="25" conditionals="2" coveredconditionals="2" methods="13" coveredmethods="12" elements="41" coveredelements="39" complexity="0" loc="26" ncloc="26" packages="2" files="3" classes="3"/>
+    <package name="src">
+      <metrics statements="20" coveredstatements="19" conditionals="2" coveredconditionals="2" methods="9" coveredmethods="8"/>
+      <file name="App.js" path="C:\xampp\htdocs\bbc\src\App.js">
+        <metrics statements="18" coveredstatements="17" conditionals="2" coveredconditionals="2" methods="9" coveredmethods="8"/>
+        <line num="17" count="10" type="stmt"/>
+        <line num="18" count="10" type="stmt"/>
+        <line num="19" count="0" type="stmt"/>
+        <line num="22" count="10" type="stmt"/>
+        <line num="25" count="11" type="stmt"/>
+        <line num="26" count="11" type="stmt"/>
+        <line num="27" count="11" type="stmt"/>
+        <line num="31" count="13" type="stmt"/>
+        <line num="32" count="13" type="stmt"/>
+        <line num="33" count="13" type="stmt"/>
+        <line num="38" count="13" type="stmt"/>
+        <line num="39" count="13" type="cond" truecount="2" falsecount="0"/>
+        <line num="40" count="1" type="stmt"/>
+        <line num="42" count="13" type="stmt"/>
+        <line num="43" count="12" type="stmt"/>
+        <line num="44" count="12" type="stmt"/>
+        <line num="49" count="32" type="stmt"/>
+        <line num="53" count="1" type="stmt"/>
+      </file>
+      <file name="config.js" path="C:\xampp\htdocs\bbc\src\config.js">
+        <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="6" count="1" type="stmt"/>
+      </file>
+    </package>
+    <package name="src.lib">
+      <metrics statements="6" coveredstatements="6" conditionals="0" coveredconditionals="0" methods="4" coveredmethods="4"/>
+      <file name="Article.js" path="C:\xampp\htdocs\bbc\src\lib\Article.js">
+        <metrics statements="6" coveredstatements="6" conditionals="0" coveredconditionals="0" methods="4" coveredmethods="4"/>
+        <line num="4" count="18" type="stmt"/>
+        <line num="5" count="18" type="stmt"/>
+        <line num="6" count="18" type="stmt"/>
+        <line num="9" count="1" type="stmt"/>
+        <line num="11" count="1" type="stmt"/>
+        <line num="13" count="1" type="stmt"/>
+      </file>
+    </package>
+  </project>
+</coverage>
