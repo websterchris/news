@@ -1,2 +1,3 @@
 /node_modules/
-/src/__snapshots__/
+__snapshots__/
+coverage

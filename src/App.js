@@ -3,6 +3,7 @@ import { StyleSheet, css } from 'aphrodite';
 import { FONTS } from './config'
 import articles from './articles.json'
 import Article from './lib/Article'
+import ArticleComponent from './components/Article/Article'
 
 
 export default class App extends Component {
@@ -46,7 +47,10 @@ export default class App extends Component {
   }
 
   render() {
-    return <div className={css(styles.wrapper)}>Hello World</div>;
+    const {current_index, read_articles} = this.state
+    return (<div className={css(styles.wrapper)}>
+               <ArticleComponent article={read_articles[current_index]}/> 
+          </div>);
   }
 }
 

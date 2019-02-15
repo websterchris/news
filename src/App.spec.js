@@ -4,7 +4,7 @@ import renderer from 'react-test-renderer';
 import { StyleSheetTestUtils } from 'aphrodite'
 import { mount, shallow } from 'enzyme'
 import Article from './lib/Article'
-
+import ArticleComponent from './components/Article/Article'
 beforeEach(() => {
   StyleSheetTestUtils.suppressStyleInjection();
 });
@@ -20,6 +20,13 @@ describe('App Component', () => {
       const tree = renderer.create(<App />).toJSON();
       expect(tree).toMatchSnapshot();
     });
+
+    it('renders an article component', () => {
+      const wrapper = mount(<App />);
+      const articleComponent = wrapper.find(ArticleComponent);
+      expect(articleComponent).toHaveLength(1);
+    });
+
 
   })
 

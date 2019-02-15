@@ -6,7 +6,7 @@
   "scripts": {
     "start": "webpack-dev-server --mode development",
     "test": "jest --verbose",
-    "test:watch": "jest --watch --verbose",
+    "test:watch": "jest --watch --verbose --updateSnapshot",
     "test:coverage": "jest --verbose --coverage"
   },
   "author": "Chris Webster",
@@ -45,6 +45,9 @@
     ],
     "setupFiles": [
       "./src/setupTests.js"
+    ],
+    "modulePathIgnorePatterns": [
+      "node_modules"
     ]
   }
 }
