@@ -1,6 +1,8 @@
 import React, {Component} from 'react'
-import { StyleSheet, css } from 'aphrodite';
-import ArticleClass from '../../lib/Article'
+import { StyleSheet, css } from 'aphrodite'
+
+import Heading from '../Typography/Heading/Heading'
+
 
 export default class Article extends Component{
 
@@ -20,7 +22,7 @@ export default class Article extends Component{
         const title = this.state.article !== undefined ? this.state.article.getTitle() : ''
         return (
             <div className={css(styles.wrapper)}>
-                {title}
+                <Heading weight={1} text={title} />
             </div>)
     }
 
