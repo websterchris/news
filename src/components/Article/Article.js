@@ -54,8 +54,7 @@ export default class Article extends Component {
 
 const styles = StyleSheet.create({
     wrapper: {
-        width: '50%',
-        margin: '0 auto'
+
     },
     article_body: {
     }

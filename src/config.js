@@ -10,5 +10,6 @@ export const COLORS = {
     danger: '#f44336',
     dark: '#607D8B',
     light: '#EEEEEE',
-    text: '#37474F'
+    text: '#37474F',
+    white: '#FFFFFF',
 }

@@ -25,6 +25,15 @@ describe('The Article Instance', () => {
     });
 
 
+    describe('getId()', () => {
+
+        it('should return the id property when called', () => {
+            const article = new Article("title", "body", 1);
+            expect(article.getId()).toEqual(1)
+        });
+
+    });    
+
     describe('getTitle()', () => {
 
         it('should return the title property when called', () => {
@@ -52,6 +61,34 @@ describe('The Article Instance', () => {
         });
 
     });
+
+    describe('getRank()', () => {
+
+        it('should return the rank property when called', () => {
+            const article = new Article("title", "body");
+            article.rank = 1
+            expect(article.getRank()).toEqual(1)
+        });
+
+    });
+
+    describe('setRank(rank)', () => {
+
+        it('should assign the rank property to the value of the first parameter when called', () => {
+            const article = new Article("title", "body");
+            article.setRank(-1)
+            expect(article.getRank()).toEqual(-1)
+        });
+
+        it('should assign the rank property to the 0 if the first parameter is invalid', () => {
+            const article = new Article("title", "body");
+            article.setRank(3)
+            expect(article.getRank()).toEqual(0)
+        });
+
+    });
+
+
 
 
 });

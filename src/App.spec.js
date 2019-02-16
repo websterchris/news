@@ -204,4 +204,22 @@ describe('App Component', () => {
 
   })
 
+  describe('[data-spec="navigation-component"]', () => {
+
+    it('should call increaseCurrentIndex() onNextArticle', () => {
+        const wrapper = mount(<App />);
+        jest.spyOn(wrapper.instance(), 'increaseCurrentIndex');
+        wrapper.find('[data-spec="navigation-component"]').props().onNextArticle()
+        expect(wrapper.instance().increaseCurrentIndex).toBeCalledTimes(1)
+      });
+
+      it('should call decreaseCurrentIndex() onPreviousArticle', () => {
+        const wrapper = mount(<App />);
+        jest.spyOn(wrapper.instance(), 'decreaseCurrentIndex');
+        wrapper.find('[data-spec="navigation-component"]').props().onPreviousArticle()
+        expect(wrapper.instance().decreaseCurrentIndex).toBeCalledTimes(1)
+      });
+
+})
+
 })

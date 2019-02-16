@@ -6,7 +6,7 @@ import Article from './lib/Article'
 
 import ArticleComponent from './components/Article/Article'
 import NavigationComponent from './components/Navigation/Navigation'
-
+import ArticleRankingComponent from './components/ArticleRanking/ArticleRanking'
 
 export default class App extends Component {
 
@@ -61,7 +61,7 @@ export default class App extends Component {
       if (articles[article_index] === undefined) {
         reject("Article does not exist")
       }
-      const article = new Article(articles[article_index].title, articles[article_index].body)
+      const article = new Article(articles[article_index].title, articles[article_index].body, article_index)
       this.removeFromUnusedIndex(article_index)
       resolve(article)
     })
@@ -78,13 +78,9 @@ export default class App extends Component {
       {
         (() => {
           if(articles_finished){
-            return <div>No more articles</div>
+            return <ArticleRankingComponent articles={read_articles} />
           }else{
-            return (<ArticleComponent 
-              article={read_articles[current_index]} 
-              
-             
-            />)
+            return (<ArticleComponent article={read_articles[current_index]} />)
           }
         })()
       }
@@ -94,6 +90,7 @@ export default class App extends Component {
         showPrevious={!articles_start}
         onNextArticle={() => { this.increaseCurrentIndex() }}  
         onPreviousArticle={() => { this.decreaseCurrentIndex() }}
+        data-spec="navigation-component"
       />
         
       </div>);
@@ -102,7 +99,9 @@ export default class App extends Component {
 
 const styles = StyleSheet.create({
   wrapper: {
-    fontFamily: FONTS.primary
+    fontFamily: FONTS.primary,
+    width: '50%',
+    margin: '0 auto'
   },
 
 });
