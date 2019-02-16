@@ -56,25 +56,29 @@ describe('The Article Component', () => {
         it('should render a `Typography/Heading` component for each heading type', () => {
             const article = new ArticleClass('title', [{type: 'heading', model:{}}, {type: 'heading', model:{}}])
             const wrapper = shallow(<Article article={article} />);
-            expect(wrapper.find(Heading)).toHaveLength(3);
+            const article_body = wrapper.find('[data-spec="article-body"]')
+            expect(article_body.find(Heading)).toHaveLength(2);
         });
 
         it('should render a `Typography/Text` component for each paragraph type', () => {
             const article = new ArticleClass('title', [{type: 'paragraph', model:{}}, {type: 'paragraph', model:{}}])
             const wrapper = shallow(<Article article={article} />);
-            expect(wrapper.find(Text)).toHaveLength(2);
+            const article_body = wrapper.find('[data-spec="article-body"]')
+            expect(article_body.find(Text)).toHaveLength(2);
         });
 
         it('should render a `Article/Image` component for each image type', () => {
             const article = new ArticleClass('title', [{type: 'image', model:{}}])
             const wrapper = shallow(<Article article={article} />);
-            expect(wrapper.find(Image)).toHaveLength(1);
+            const article_body = wrapper.find('[data-spec="article-body"]')
+            expect(article_body.find(Image)).toHaveLength(1);
         });
 
         it('should render a `Article/UnorderedList` component for each unordered type', () => {
             const article = new ArticleClass('title', [{type: 'list', model:{type: "unordered", items:["test"]}}])
             const wrapper = shallow(<Article article={article} />);
-            expect(wrapper.find(UnorderedList)).toHaveLength(1);
+            const article_body = wrapper.find('[data-spec="article-body"]')
+            expect(article_body.find(UnorderedList)).toHaveLength(1);
         });
 
     });

@@ -30,7 +30,14 @@ describe('The Typography/Text Component', () => {
         it('should render `props.text`', () => {
             const wrapper = shallow(<Text text={"text"} />);
             expect(wrapper.find('p').text()).toBe("text")
-          });
+        });
+
+        it('should pass `props.onClick` to onClick', () => {
+            const onClick = jest.fn();
+            const wrapper = shallow(<Text onClick={onClick} />);
+            wrapper.find('p').simulate('click');
+            expect(onClick).toHaveBeenCalledTimes(1);
+        });
 
 })
 })

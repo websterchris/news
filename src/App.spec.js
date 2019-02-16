@@ -4,12 +4,16 @@ import renderer from 'react-test-renderer';
 import { StyleSheetTestUtils } from 'aphrodite'
 import { mount, shallow } from 'enzyme'
 import Article from './lib/Article'
+
 import ArticleComponent from './components/Article/Article'
+import NavigationComponent from './components/Navigation/Navigation'
+
 beforeEach(() => {
   StyleSheetTestUtils.suppressStyleInjection();
 });
 afterEach(() => {
   StyleSheetTestUtils.clearBufferAndResumeStyleInjection();
+  
 });
 
 describe('App Component', () => {
@@ -21,12 +25,17 @@ describe('App Component', () => {
       expect(tree).toMatchSnapshot();
     });
 
-    it('renders an article component', () => {
+    it('should render an Article component', () => {
       const wrapper = mount(<App />);
       const articleComponent = wrapper.find(ArticleComponent);
       expect(articleComponent).toHaveLength(1);
     });
 
+    it('should render a Navigation component', () => {
+      const wrapper = mount(<App />);
+      const navigationComponent = wrapper.find(NavigationComponent);
+      expect(navigationComponent).toHaveLength(1);
+    });
 
   })
 
@@ -66,7 +75,7 @@ describe('App Component', () => {
       const wrapper = shallow(<App />);
       const expected_length = wrapper.state().read_articles.length + 1
       wrapper.instance().addArticleToRead("article")
-      const {read_articles} = wrapper.state()
+      const { read_articles } = wrapper.state()
       expect(read_articles.length).toBe(expected_length)
       expect(read_articles[read_articles.length - 1]).toBe("article")
     });
@@ -87,7 +96,7 @@ describe('App Component', () => {
     it('should resolve an Article instance if `article_index` is valid', async () => {
       const wrapper = shallow(<App />);
       expect.assertions(1);
-      const article =  await wrapper.instance().fetchArticle(0)
+      const article = await wrapper.instance().fetchArticle(0)
       expect(article instanceof Article).toBe(true)
     });
 
@@ -101,5 +110,98 @@ describe('App Component', () => {
 
   })
 
+  describe('increaseCurrentIndex()', () => {
+
+    it('should call `fetchArticle()` if the next article has not been read ', async () => {
+      const wrapper = shallow(<App />);
+      wrapper.setState({ read_articles: ["read_article"], current_index: 0 })
+      jest.spyOn(wrapper.instance(), 'fetchArticle');
+      expect.assertions(1);
+      await wrapper.instance().increaseCurrentIndex()
+      expect(wrapper.instance().fetchArticle).toBeCalledTimes(1)
+    });
+
+    it('should not call `fetchArticle()` if the next article has been read ', async () => {
+      const wrapper = shallow(<App />);
+      wrapper.setState({ read_articles: ["read_article", "read_article"], current_index: 0 })
+      jest.spyOn(wrapper.instance(), 'fetchArticle');
+      expect.assertions(1);
+      await wrapper.instance().increaseCurrentIndex()
+      expect(wrapper.instance().fetchArticle).toBeCalledTimes(0)
+    });
+
+    it('should call `addArticleToRead()` if the next article has not been read ', async () => {
+      const wrapper = shallow(<App />);
+      wrapper.setState({read_articles: ["read_article"], current_index: 0}) 
+      const spy = jest.spyOn(wrapper.instance(), 'addArticleToRead');
+      expect.assertions(1);
+      await wrapper.instance().increaseCurrentIndex()
+      expect(wrapper.instance().addArticleToRead).toBeCalledTimes(2)
+    });
+
+    it('should not call `addArticleToRead()` if the next article has been read ', async () => {
+      const wrapper = shallow(<App />);
+      wrapper.setState({ read_articles: ["read_article", "read_article", "read_article", "read_article"], current_index: 1 })
+      jest.spyOn(wrapper.instance(), 'addArticleToRead');
+      expect.assertions(1);
+      await wrapper.instance().increaseCurrentIndex()
+      expect(wrapper.instance().addArticleToRead).toBeCalledTimes(1)
+    });
+
+    it('should increase `state.current_index` by 1 if the next article has not been read ', async () => {
+      const wrapper = shallow(<App />);
+      wrapper.setState({read_articles: ["read_article"], current_index: 0}) 
+      expect.assertions(1);
+      await wrapper.instance().increaseCurrentIndex()
+      expect(wrapper.state().current_index).toBe(1)
+    });
+
+    it('should increase `state.current_index` by 1 if the next article has already been read ', async () => {
+      const wrapper = shallow(<App />);
+      wrapper.setState({read_articles: ["read_article", "read_article"], current_index: 0}) 
+      expect.assertions(1);
+      await wrapper.instance().increaseCurrentIndex()
+      expect(wrapper.state().current_index).toBe(1)
+    });
+  })
+
+  describe('decreaseCurrentIndex()', () => {
+
+    it('should decrease `state.current_index` by 1 if it is not the first article ', async () => {
+      const wrapper = shallow(<App />);
+      wrapper.setState({read_articles: ["read_article", "read_article"], current_index: 1}) 
+      expect.assertions(1);
+      await wrapper.instance().decreaseCurrentIndex()
+      expect(wrapper.state().current_index).toBe(0)
+    });
+
+    it('should not decrease `state.current_index` by 1 if it is not the first article ', async () => {
+      const wrapper = shallow(<App />);
+      wrapper.setState({read_articles: ["read_article", "read_article"], current_index: 0}) 
+      expect.assertions(1);
+      await wrapper.instance().decreaseCurrentIndex()
+      expect(wrapper.state().current_index).toBe(0)
+    });
+
+  })
+
+  describe('on `state.current_index` change', () => {
+
+    it('should render an Article component if there are unread articles', () => {
+      const wrapper = mount(<App />);
+      wrapper.setState({unused_indexes: [1], read_articles: [new Article("", [])], current_index: 0}) 
+      const articleComponent = wrapper.find(ArticleComponent);
+      expect(articleComponent).toHaveLength(1);
+    });
+
+    it('should not render an Article component if there are not unread articles', () => {
+      const wrapper = mount(<App />);
+      wrapper.setState({unused_indexes: [], read_articles: [new Article("", []), new Article("", [])], current_index: 1}) 
+      const articleComponent = wrapper.find(ArticleComponent);
+      expect(articleComponent).toHaveLength(0);
+    });
+
+
+  })
 
 })
