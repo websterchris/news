@@ -7,19 +7,23 @@ import Article from './lib/Article'
 import ArticleComponent from './components/Article/Article'
 import NavigationComponent from './components/Navigation/Navigation'
 import ArticleRankingComponent from './components/ArticleRanking/ArticleRanking'
+import Snackbar from './components/Snackbar/Snackbar'
 
 export default class App extends Component {
 
   state = {
     read_articles: [],
     current_index: 0,
-    unused_indexes: [0, 1, 2, 3, 4]
+    unused_indexes: [0, 1, 2, 3, 4],
+    snackbar: false
   }
 
   componentDidMount = () => {
     this.fetchArticle().then(article => {
       this.addArticleToRead(article)
-    }).catch(e => console.error(e));
+    }).catch(e => this.setState({snackbar: {text: "Could not fetch article", type: "danger"}}));
+
+
   }
 
   getRandomUnusedIndex = () => {
@@ -45,7 +49,7 @@ export default class App extends Component {
       if (read_articles.length === (current_index + 1)) {
         this.fetchArticle().then(article => {
           this.addArticleToRead(article)
-        }).catch(e => console.error(e));
+        }).catch(e => this.setState({snackbar: {text: "Could not fetch article", type: "danger"}}));
       }
     })
   }
@@ -75,10 +79,17 @@ export default class App extends Component {
     })
   }
 
+  handleSnackbarClose = () => {
+    this.setState({snackbar: false})
+  }
+
   render() {
-    const { current_index, read_articles, unused_indexes } = this.state
+    const { current_index, read_articles, snackbar } = this.state
     const articles_finished = read_articles[current_index] === null
     const articles_start = current_index === 0
+
+    const snackbar_component = snackbar !== false ? <Snackbar text={snackbar.text} type={snackbar.type} onClose={() => {this.handleSnackbarClose()}}/> : null
+    
     return (
 
       <div className={css(styles.wrapper)}>
@@ -101,6 +112,7 @@ export default class App extends Component {
           data-spec="navigation-component"
         />
 
+        {snackbar_component}
       </div>);
   }
 }

@@ -7,11 +7,13 @@ import Button from '../Button/Button'
 
 import Heading from '../Typography/Heading/Heading'
 import Article from './Article/Article'
+import Snackbar from '../Snackbar/Snackbar'
 
 export default class ArticleRanking extends Component {
 
     state = {
-        articles: []
+        articles: [],
+        snackbar: false
     }
 
     componentDidMount = () => {
@@ -43,13 +45,21 @@ export default class ArticleRanking extends Component {
         })
     }
 
+    handleSnackbarClose = () => {
+        this.setState({snackbar: false})
+    }
+
     handleSubmit = () => {
         const payload = this.makePayload()
-        this.postRankings(payload).then(() => { console.log('success') }).catch((e) => console.error(e))
+        this.postRankings(payload).then(() => { 
+            this.setState({snackbar: {text: "Submitted Successfully", type: "success"}})
+        }).catch((e) => this.setState({snackbar: {text: "Could not submit data", type: "danger"}}))
     }
 
     render() {
-        const { articles } = this.state
+        const { articles, snackbar } = this.state
+        const snackbar_component = snackbar !== false ? <Snackbar text={snackbar.text} type={snackbar.type} onClose={() => {this.handleSnackbarClose()}}/> : null
+
         return (
             <div className={css(styles.wrapper)}>
                 <Heading weight={1} text={"Did you like these articles?"} />
@@ -68,6 +78,8 @@ export default class ArticleRanking extends Component {
                 <div className={css(styles.button_wrapper)}>
                     <Button onClick={() => this.handleSubmit()} text={"Submit"} data-spec="rank-submit-button"/>
                 </div>
+
+                {snackbar_component}
             </div>
         )
     }

@@ -7,6 +7,7 @@ import Article from './lib/Article'
 
 import ArticleComponent from './components/Article/Article'
 import NavigationComponent from './components/Navigation/Navigation'
+import Snackbar from './components/Snackbar/Snackbar'
 
 beforeEach(() => {
   StyleSheetTestUtils.suppressStyleInjection();
@@ -36,6 +37,11 @@ describe('App Component', () => {
       const navigationComponent = wrapper.find(NavigationComponent);
       expect(navigationComponent).toHaveLength(1);
     });
+
+    it('should not render a Snackbar component ` ', () => {
+      const wrapper = shallow(<App />);
+      expect(wrapper.find(Snackbar)).toHaveLength(0);
+  });
 
   })
 
@@ -183,6 +189,7 @@ describe('App Component', () => {
       await wrapper.instance().increaseCurrentIndex()
       expect(wrapper.state().current_index).toBe(1)
     });
+
   })
 
   describe('decreaseCurrentIndex()', () => {
@@ -239,6 +246,33 @@ describe('App Component', () => {
         wrapper.find('[data-spec="navigation-component"]').props().onPreviousArticle()
         expect(wrapper.instance().decreaseCurrentIndex).toBeCalledTimes(1)
       });
+
+})
+
+describe('handleSnackbarClose()', () => {
+
+  it('should set `state.snackbar` to false', () => {
+      const wrapper = shallow(<App />);
+      wrapper.setState({ snackbar: true })
+      wrapper.instance().handleSnackbarClose()
+      expect(wrapper.state().snackbar).toBe(false)
+  });
+
+})
+
+describe('state.snackbar change', () => {
+
+  it('should not render a <Snackbar/> if state.snackbar is false', () => {
+      const wrapper = shallow(<App />);
+      wrapper.setState({ snackbar: false })
+      expect(wrapper.find(Snackbar)).toHaveLength(0)
+  });
+
+  it('should render a <Snackbar/> if state.snackbar is not false', () => {
+      const wrapper = shallow(<App />);
+      wrapper.setState({ snackbar: {} })
+      expect(wrapper.find(Snackbar)).toHaveLength(1)
+  });
 
 })
 

@@ -8,6 +8,7 @@ import ArticleClass from '../../lib/Article'
 import ArticleRanking from './ArticleRanking';
 import Heading from '../Typography/Heading/Heading'
 import AR_ArticleComponent from './Article/Article'
+import Snackbar from '../Snackbar/Snackbar'
 
 beforeEach(() => {
     StyleSheetTestUtils.suppressStyleInjection();
@@ -33,6 +34,11 @@ describe('The ArticleRanking Component', () => {
         it('should render an ArticleRanking/Article component for each `props.article` ', () => {
             const wrapper = shallow(<ArticleRanking articles={[new ArticleClass('', []), new ArticleClass('', [], 1)]} />);
             expect(wrapper.find(AR_ArticleComponent)).toHaveLength(2);
+        });
+    
+        it('should not render a Snackbar component ` ', () => {
+            const wrapper = shallow(<ArticleRanking articles={[new ArticleClass('', []), new ArticleClass('', [], 1)]} />);
+            expect(wrapper.find(Snackbar)).toHaveLength(0);
         });
 
     })
@@ -65,57 +71,102 @@ describe('The ArticleRanking Component', () => {
             const wrapper = shallow(<ArticleRanking articles={[]} />);
             expect.assertions(1);
             try {
-              await wrapper.instance().postRankings(false)
+                await wrapper.instance().postRankings(false)
             } catch (e) {
-              expect(e).toBeTruthy()
+                expect(e).toBeTruthy()
             }
-          });
+        });
 
-          it('should resolve the Promise if `payload` is valid', async () => {
+        it('should resolve the Promise if `payload` is valid', async () => {
             const wrapper = shallow(<ArticleRanking articles={[]} />);
             expect.assertions(1);
-            const rank =  await wrapper.instance().postRankings([{1:1}])
+            const rank = await wrapper.instance().postRankings([{ 1: 1 }])
             expect(rank).toBe(true)
-          });
+        });
     })
 
 
     describe('handleSubmit()', () => {
 
         it('should call `postRankings(payload)`', () => {
-            const wrapper = shallow(<ArticleRanking articles={[]}  />);
+            const wrapper = shallow(<ArticleRanking articles={[]} />);
             jest.spyOn(wrapper.instance(), 'postRankings');
             wrapper.instance().handleSubmit()
             expect(wrapper.instance().postRankings).toHaveBeenCalled()
-          });
+        });
 
-          it('should call `makePayload()`', () => {
-            const wrapper = shallow(<ArticleRanking articles={[]}  />);
+        it('should call `makePayload()`', () => {
+            const wrapper = shallow(<ArticleRanking articles={[]} />);
             jest.spyOn(wrapper.instance(), 'makePayload');
             wrapper.instance().handleSubmit()
             expect(wrapper.instance().makePayload).toHaveBeenCalled()
-          });
+        });
+
+        it('should set `state.snackbar` to not be false if postRankings is rejected', async () => {
+            const wrapper = shallow(<ArticleRanking articles={[]} />);
+            const makePayload = jest.spyOn(wrapper.instance(), 'makePayload');
+            makePayload.mockRejectedValueOnce()
+            await wrapper.instance().handleSubmit()
+            expect.assertions(1);
+            expect(wrapper.state().snackbar).not.toBe(false)
+        });
+
+        it('should set `state.snackbar` to not be false if postRankings is resolved', async () => {
+            const wrapper = shallow(<ArticleRanking articles={[]} />);
+            const makePayload = jest.spyOn(wrapper.instance(), 'makePayload');
+            makePayload.mockResolvedValue()
+            await wrapper.instance().handleSubmit()
+            expect.assertions(1);
+            expect(wrapper.state().snackbar).not.toBe(false)
+        });
+
+    })
+
+    describe('handleSnackbarClose()', () => {
+
+        it('should set `state.snackbar` to false', () => {
+            const wrapper = shallow(<ArticleRanking articles={[]} />);
+            wrapper.setState({ snackbar: true })
+            wrapper.instance().handleSnackbarClose()
+            expect(wrapper.state().snackbar).toBe(false)
+        });
+
+    })
+
+    describe('state.snackbar change', () => {
+
+        it('should not render a <Snackbar/> if state.snackbar is false', () => {
+            const wrapper = shallow(<ArticleRanking articles={[]} />);
+            wrapper.setState({ snackbar: false })
+            expect(wrapper.find(Snackbar)).toHaveLength(0)
+        });
+
+        it('should render a <Snackbar/> if state.snackbar is not false', () => {
+            const wrapper = shallow(<ArticleRanking articles={[]} />);
+            wrapper.setState({ snackbar: {} })
+            expect(wrapper.find(Snackbar)).toHaveLength(1)
+        });
 
     })
 
     describe('makePayload()', () => {
 
         it('should return an array of {article_id : article_rank}', () => {
-            const wrapper = shallow(<ArticleRanking articles={[new ArticleClass('', [], 1)]}  />);
+            const wrapper = shallow(<ArticleRanking articles={[new ArticleClass('', [], 1)]} />);
             expect(wrapper.instance().makePayload().length).toBe(1)
-            expect(wrapper.instance().makePayload()[0]).toEqual({1:0})
-          });
+            expect(wrapper.instance().makePayload()[0]).toEqual({ 1: 0 })
+        });
 
     })
 
     describe('[data-spec="rank-submit-button"]', () => {
 
         it('should call handleSubmit() onClick', () => {
-            const wrapper = shallow(<ArticleRanking articles={[]}  />);
+            const wrapper = shallow(<ArticleRanking articles={[]} />);
             jest.spyOn(wrapper.instance(), 'handleSubmit');
             wrapper.find('[data-spec="rank-submit-button"]').simulate('click')
             expect(wrapper.instance().handleSubmit).toHaveBeenCalled()
-          });
+        });
 
     })
 })
