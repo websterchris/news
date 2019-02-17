@@ -81,31 +81,51 @@ describe('App Component', () => {
     });
   })
 
-  describe('fetchArticle(article_index)', () => {
+  describe('fetchArticle()', () => {
 
     it('should reject the Promise if `article_index` is invalid', async () => {
       const wrapper = shallow(<App />);
+      const getRandomUnusedIndex = jest.spyOn(wrapper.instance(), 'getRandomUnusedIndex');
+      getRandomUnusedIndex.mockResolvedValue(-5)
       expect.assertions(1);
       try {
-        await wrapper.instance().fetchArticle(-5)
+        await wrapper.instance().fetchArticle()
       } catch (e) {
         expect(e).toBeTruthy()
       }
     });
 
-    it('should resolve an Article instance if `article_index` is valid', async () => {
+    it('should resolve an Article instance if `article_index` is valid and `state.unused_indexes`.length is 0', async () => {
       const wrapper = shallow(<App />);
+      wrapper.setState({unused_indexes: [1,2]})
       expect.assertions(1);
-      const article = await wrapper.instance().fetchArticle(0)
+      const article = await wrapper.instance().fetchArticle()
       expect(article instanceof Article).toBe(true)
+    });
+
+
+    it('should resolve an null if `state.unused_indexes` has 0 elements', async () => {
+      const wrapper = shallow(<App />);
+      wrapper.setState({unused_indexes: []})
+      expect.assertions(1);
+      const article = await wrapper.instance().fetchArticle()
+      expect(article).toBe(null)
     });
 
     it('should call `removeFromUnusedIndex(index)` if `article_index` is valid', async () => {
       const wrapper = shallow(<App />);
       jest.spyOn(wrapper.instance(), 'removeFromUnusedIndex');
       expect.assertions(1);
-      const article = await wrapper.instance().fetchArticle(0)
-      expect(wrapper.instance().removeFromUnusedIndex).toHaveBeenCalled()
+      const article = await wrapper.instance().fetchArticle()
+      expect(wrapper.instance().removeFromUnusedIndex).toBeCalledTimes(1)
+    });
+
+    it('should call `getRandomUnusedIndex()` if `article_index` is valid', async () => {
+      const wrapper = shallow(<App />);
+      jest.spyOn(wrapper.instance(), 'getRandomUnusedIndex');
+      expect.assertions(1);
+      const article = await wrapper.instance().fetchArticle()
+      expect(wrapper.instance().getRandomUnusedIndex).toBeCalledTimes(1)
     });
 
   })
@@ -196,7 +216,7 @@ describe('App Component', () => {
 
     it('should not render an Article component if there are not unread articles', () => {
       const wrapper = mount(<App />);
-      wrapper.setState({unused_indexes: [], read_articles: [new Article("", []), new Article("", [])], current_index: 1}) 
+      wrapper.setState({unused_indexes: [], read_articles: [new Article("", []), new Article(), null], current_index: 2}) 
       const articleComponent = wrapper.find(ArticleComponent);
       expect(articleComponent).toHaveLength(0);
     });

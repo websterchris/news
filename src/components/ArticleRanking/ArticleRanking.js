@@ -15,7 +15,8 @@ export default class ArticleRanking extends Component {
     }
 
     componentDidMount = () => {
-        this.setState({ articles: this.props.articles || [] })
+        const articles = this.props.articles ? this.props.articles  : []
+        this.setState({ articles: articles.filter(article => article !== null) || [] })
     }
 
     handleRankChange = (index, rank) => {

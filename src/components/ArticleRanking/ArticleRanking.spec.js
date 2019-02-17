@@ -37,6 +37,18 @@ describe('The ArticleRanking Component', () => {
 
     })
 
+    describe('componentDidMount()', () => {
+
+        it('should set `state.articles` to be `props.articles` with no null values', () => {
+            const wrapper = shallow(<ArticleRanking articles={[new ArticleClass('', []), new ArticleClass('', [], 1), null]} />);
+            wrapper.instance().componentDidMount()
+            const articles = wrapper.state().articles
+            expect(articles.length).toBe(2);
+            expect(articles[articles.length - 1]).not.toBe(null);
+        });
+
+    })
+
     describe('handleRankChange(index, rank)', () => {
 
         it('should set `state.articles[index].rank` equal to the second parameter`', () => {
