@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types';
 import { StyleSheet, css } from 'aphrodite'
-import {COLORS, FONTS} from '../../config'
+import {COLORS, FONTS, BREAKPOINTS} from '../../config'
 
 
 const Button = props => {
@@ -13,8 +13,8 @@ const Button = props => {
 
 const styles = StyleSheet.create({
     btn: {
-        minWidth: '10em',
-        padding: '1em',
+        padding: '0.5em',
+        minWidth: '8em',
         background: COLORS.primary,
         border: 0,
         color: COLORS.white,
@@ -28,6 +28,10 @@ const styles = StyleSheet.create({
         ":active": {
             boxShadow: `0 2px ${COLORS.light}` ,
             transform: 'translateY(4px)'
+        },
+        [`@media (min-width: ${BREAKPOINTS.tablet})`]: {
+            minWidth: '10em',
+            padding: '1em',
         }
     }
 });

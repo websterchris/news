@@ -92,7 +92,9 @@ const styles = StyleSheet.create({
 
     article_container: {
         width: '100%',
-        listStyle: 'none'
+        listStyle: 'none',
+        margin: 0,
+        padding: 0
     },
     button_wrapper: {
         width: '100%',

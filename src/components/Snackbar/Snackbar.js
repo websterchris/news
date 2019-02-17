@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types';
 import { StyleSheet, css } from 'aphrodite'
-import {COLORS} from '../../config'
+import {COLORS, BREAKPOINTS} from '../../config'
 import Text from '../Typography/Text/Text'
 
 const Snackbar = props => {
@@ -29,10 +29,11 @@ const positionKeyframes = {
 
 const styles = StyleSheet.create({
     wrapper: {
-      width: '25%',
-      minHeight: '1em',
+      left: '50%',
+      width: '50%',
+      minHeight: '0.5em',
       position: 'fixed',
-      left: '2em',
+      marginLeft: '-25%',
       borderRadius: '5px',
       boxShadow: '0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)',
       animationName: [positionKeyframes],
@@ -40,13 +41,19 @@ const styles = StyleSheet.create({
       animationFillMode : 'forwards',
       display: 'flex',
       alignItems: 'center',
+      [`@media (min-width: ${BREAKPOINTS.tablet})`]: {
+        width: '25%',
+        left: '2em',
+        minHeight: '1em',
+        marginLeft: 0,
+    }
     },
 
     text: {
         color: COLORS.white,
         paddingLeft: '1em',
         fontSize: '0.8em',
-        width: '80%'
+        width: '80%',
     },
 
     close: {

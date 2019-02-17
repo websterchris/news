@@ -38,14 +38,5 @@ describe('The Article/Image Component', () => {
             expect(wrapper.find('img').props().alt).toBe("test");
         });
 
-        it('should assign <img> height to `props.height`', () => {
-            const wrapper = shallow(<Image height={"10"} />);
-            expect(wrapper.find('img').props().height).toBe("10");
-        });
-
-        it('should assign <img> width to `props.width`', () => {
-            const wrapper = shallow(<Image width={"20"} />);
-            expect(wrapper.find('img').props().width).toBe("20");
-        });
     })
 })

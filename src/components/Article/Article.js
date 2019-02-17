@@ -37,7 +37,7 @@ export default class Article extends Component {
                                         case "paragraph":
                                             return <Text key={index} text={body_content.model.text} />
                                         case "image":
-                                            return <Image key={index} src={body_content.model.url} alt={body_content.model.altText} height={body_content.model.height} width={body_content.model.width} />
+                                            return <Image key={index} src={body_content.model.url} alt={body_content.model.altText} />
                                         case "list":
                                             return body_content.model.type === "unordered" ? <UnorderedList key={index} items={body_content.model.items} /> : null
                                     }

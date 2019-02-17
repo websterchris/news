@@ -13,3 +13,10 @@ export const COLORS = {
     text: '#37474F',
     white: '#FFFFFF',
 }
+
+export const BREAKPOINTS = {
+    tablet: '768px',
+    desktop: '1024px',
+    widescreen: '1216px',
+    full_hd: '1408px'
+}

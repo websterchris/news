@@ -4,6 +4,7 @@ import { StyleSheetTestUtils } from 'aphrodite'
 import { mount, shallow } from 'enzyme'
 
 import UnorderedList from './UnorderedList'
+import Text from '../../Typography/Text/Text'
 
 beforeEach(() => {
     StyleSheetTestUtils.suppressStyleInjection();
@@ -37,13 +38,18 @@ describe('The Article/Unordered Component', () => {
                 expect(wrapper.find('li')).toHaveLength(3);
             });
     
-            it('should render the <li> text to equal current `item`', () => {
+            it('should render the [data-spec="unordered-item-text"] text to equal current `item`', () => {
                 const wrapper = shallow(<UnorderedList items={["test1", "test2", "test3"]} />);
-                const list_items = wrapper.find('li').map(node => node.text());
-                expect(list_items[0]).toBe("test1");
-                expect(list_items[1]).toBe("test2");
-                expect(list_items[2]).toBe("test3");
+                const list_items = wrapper.find('li').map(node => node);
+                expect(list_items[0].find('[data-spec="unordered-item-text"]').props().text).toBe("test1");
+                expect(list_items[1].find('[data-spec="unordered-item-text"]').props().text).toBe("test2");
+                expect(list_items[2].find('[data-spec="unordered-item-text"]').props().text).toBe("test3");
+            });
 
+            it('should render a [data-spec="unordered-item-hyphen"]', () => {
+                const wrapper = shallow(<UnorderedList items={["test1"]} />);
+                const list_items = wrapper.find('li').map(node => node);
+                expect(list_items[0].find('[data-spec="unordered-item-hyphen"]').props().text).toBe("-");
             });
         })
 

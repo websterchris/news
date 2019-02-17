@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { StyleSheet, css } from 'aphrodite';
-import { FONTS } from './config'
+import { FONTS, BREAKPOINTS } from './config'
 import articles from './articles.json'
 import Article from './lib/Article'
 
@@ -14,7 +14,7 @@ export default class App extends Component {
   state = {
     read_articles: [],
     current_index: 0,
-    unused_indexes: [0, 1, 2, 3, 4],
+    unused_indexes: [0, 1, 2, 3 , 4],
     snackbar: false
   }
 
@@ -120,8 +120,11 @@ export default class App extends Component {
 const styles = StyleSheet.create({
   wrapper: {
     fontFamily: FONTS.primary,
-    width: '50%',
-    margin: '0 auto'
+    width: '80%',
+    margin: '0 auto',
+    [`@media (min-width: ${BREAKPOINTS.tablet})`]: {
+      width: '50%'
+  }
   },
 
 });
