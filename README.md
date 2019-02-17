@@ -10,7 +10,11 @@
 ``` bash
 npm start
 ```
+
 ## To Test
 ``` bash
 npm test
 ```
+
+## To Generate an error
+Remove all articles from `./src/articles.json`
